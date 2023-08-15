@@ -1,2 +1,2 @@
 # Activities
-Used for all Activities during SAVVY Coders DAP Program
+Used for all Activities during Savvy Coders DAP Program
