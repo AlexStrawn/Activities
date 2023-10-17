@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/theal/code/SavvyCoders/dap-curriculum/Section08/resources/SavvyCoders_SQL_2_chargeCar.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2126"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,7:maindimUser"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="dimCar" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="52"/><column index="2" value="75"/><column index="3" value="152"/><column index="4" value="73"/><column index="5" value="115"/><column index="6" value="82"/><column index="7" value="127"/><column index="8" value="125"/><column index="9" value="96"/><column index="10" value="90"/><column index="11" value="107"/><column index="12" value="82"/><column index="13" value="73"/><column index="14" value="53"/><column index="15" value="78"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="dimFacility" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="85"/><column index="2" value="163"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="dimUser" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="63"/><column index="2" value="96"/><column index="3" value="108"/><column index="4" value="52"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="factCharge" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="79"/><column index="2" value="63"/><column index="3" value="74"/><column index="4" value="55"/><column index="5" value="129"/><column index="6" value="129"/><column index="7" value="94"/><column index="8" value="85"/><column index="9" value="113"/><column index="10" value="75"/><column index="11" value="104"/><column index="12" value="77"/><column index="13" value="82"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">-- -- BREAKOUT #2 --
+-- -----------------
+-- SELECT DISTINCT du.userId, dc.carMake, dc.carModel, (dc.priceEuro * 1.09) as priceUSD
+-- FROM factCharge as fc
+-- INNER JOIN dimUser as du
+-- 	ON fc.userId = du.userId
+-- LEFT JOIN dimCar as dc
+-- 	ON du.carID = dc.carID
+-- WHERE carMake IS NOT NULL;
+--------------------------------------------------------------------------------------------
+
+-- SELECT substr('SQLITE SUBSTR', 1, 6) AS 'newString' ;
+
+-- SELECT appPlatform, TRIM(appPlatform, 'i') as Trimmed
+-- FROM dimUser
+-- WHERE appPlatform = 'ios';
+
+-- SELECT length('          SQLITE   ')as Length, length(TRIM(' SQLITE ')) as TrimmedLength;
+-- SELECT typeFacility, length(typeFacility)
+-- FROM dimFacility;
+
+-- SELECT distanceHome
+-- FROM dimUser
+-- WHERE distanceHome IS NULL;
+
+-- UPDATE dimUser
+-- SET distanceHome = 0
+-- WHERE distanceHome IS NULL;
+-- 
+-- SELECT distanceHome
+-- FROM dimUser;
+
+
+-- -- BREAKOUT QUESTIONS --
+-- ------------------------
+-- SELECT DISTINCT substr(dateCreated, 1, 4) AS 'Year', round(avg(chargeTimeHrs),2) as avgChargeTime, carMake
+-- FROM factCharge as fc
+-- INNER JOIN dimUser as du
+-- 	ON fc.userId = du.userId
+-- INNER JOIN dimCar as dc
+-- 	ON du.carID = dc.carID
+-- GROUP BY carMake
+-- ORDER BY avgChargeTime DESC;
+
+-- ALTER TABLE dimUser
+-- ADD COLUMN 'Country';
+-- UPDATE dimUser
+-- SET Country = 'USA';
+-- ALTER TABLE dimUser
+-- DROP COLUMN distanceHome
+-- SELECT * 
+-- FROM dimUser
+------------------------------------------------------------------------------------------------------------------</sql><current_tab id="0"/></tab_sql></sqlb_project>

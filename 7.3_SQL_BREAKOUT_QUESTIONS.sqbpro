@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:\Users\theal\code\SavvyCoders\dap-curriculum\Section07\Resources\SavvyCoders_SQL_chargeDB.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="3009"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,6:maindimDay"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="EVCharging" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="78"/><column index="2" value="75"/><column index="3" value="60"/><column index="4" value="129"/><column index="5" value="129"/><column index="6" value="79"/><column index="7" value="70"/><column index="8" value="113"/><column index="9" value="120"/><column index="10" value="75"/><column index="11" value="72"/><column index="12" value="74"/><column index="13" value="63"/><column index="14" value="76"/><column index="15" value="81"/><column index="16" value="91"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="dimDay" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="71"/><column index="2" value="91"/><column index="3" value="73"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="dimFacility" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="85"/><column index="2" value="163"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="dimUser" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="63"/><column index="2" value="96"/><column index="3" value="108"/><column index="4" value="75"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="factCharge" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="79"/><column index="2" value="63"/><column index="3" value="74"/><column index="4" value="55"/><column index="5" value="129"/><column index="6" value="129"/><column index="7" value="94"/><column index="8" value="85"/><column index="9" value="113"/><column index="10" value="75"/><column index="11" value="104"/><column index="12" value="77"/><column index="13" value="82"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">-- -- BREAKOUT QUESTIONS --
+---------------------------
+-- SELECT DISTINCT locationId, count(DISTINCT stationId) as numStations 
+-- FROM EVCharging
+-- Group BY locationId
+-- ORDER BY numStations DESC
+-- LIMIT 20;
+-- 
+-- SELECT userId, round(AVG(kwhTotal),2) as avgPower 
+-- FROM EVCharging
+-- GROUP BY userId; 
+-- 
+-- SELECT DISTINCT locationId, round(sum(kwhTotal),2) as totalpowerKWH
+-- FROM EVCharging
+-- GROUP BY locationId
+-- ORDER BY totalpowerKWH DESC
+-- LIMIT 10;
+
+-- SELECT weekday, userId, round(sum(kwhTotal),2) as kwhTotal
+-- FROM EVCharging
+-- -- WHERE weekday = &quot;Wed&quot; -- Use this to select specific day of the week 
+-- GROUP BY weekday, userId
+-- ORDER BY kwhTotal DESC
+-- LIMIT 15;
+-- 
+-- SELECT userId, SUM(chargeTimeHrs)
+-- FROM EVCharging
+-- GROUP BY userId
+-- HAVING sum(chargeTimeHrs) &gt; 10
+-- LIMIT 10;
+
+-- SELECT stationid, count(stationid)  as uses
+-- from EVCharging
+-- Group by stationId
+-- having uses &gt; 100
+-- order by uses DESC;
+-- 
+-- SELECT  userId, round(sum(kwhTotal),2) as totalPower
+-- FROM EVCharging 
+-- GROUP BY userId
+-- HAVING totalPower &gt; 1000
+-- ORDER BY totalPower DESC
+-- LIMIT 15;
+-- 
+-- SELECT userId, sum(chargeTimeHrs) as totalTimeHrs, sum(kwhTotal) as totalPwrKWH
+-- FROM EVCharging
+-- GROUP By userId
+-- ORDER BY totalPwrKWH DESC
+-- LIMIT 5;
+-- 
+-- SELECT userId, round(sum(chargeTimeHrs),2) as totalTimeHrs, round(sum(kwhTotal),2) as kwhTotal
+-- FROM EVCharging
+-- WHERE weekday = &quot;Thu&quot;
+-- GROUP BY userId
+-- ORDER BY 2 DESC
+-- LIMIT 25;
+-- 
+-- SELECT stationId, locationId, Sum(chargeTimeHrs) as TotalHrs
+-- FROM EVCharging
+-- GROUP BY stationId
+-- HAVING Sum(chargeTimeHrs) &lt; 5
+-- ORDER BY TotalHrs;
+
+-- SELECT du.carMake, fc.*
+-- FROM factCharge as fc
+-- INNER JOIN dimUser as du
+-- ON fc.userId = du.userId
+-- LIMIT 50;
+
+-- SELECT du.carMake
+-- 		, count(*) as numCharges
+-- 		, round(sum(fc.chargeTimeHrs),2) as timeCharging
+-- FROM factCharge as fc
+-- INNER JOIN dimUser as du
+-- ON fc.userId = du.userId
+-- GROUP BY du.carMake
+-- ORDER BY timeCharging DESC;
+
+SELECT dd.dayOfWeek, round(AVG(fc.chargeTimeHrs),2) as avgChargeTime
+FROM factCharge as fc
+INNER JOIN dimDay as dd 
+ON fc.dayID = dd.dateKey
+GROUP BY dd.dayOfWeek
+ORDER BY AVG(fc.chargeTimeHrs) DESC;
+
+SELECT du.appPlatform, count(fc.chargeTimeHrs) as numCharges
+FROM dimUser as du
+INNER JOIN factCharge as fc
+ON du.userId = fc.userId
+GROUP BY du.appPlatform
+ORDER BY numCharges DESC;</sql><current_tab id="0"/></tab_sql></sqlb_project>
